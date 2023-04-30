@@ -55,31 +55,83 @@ class KeyboardApplication extends JFrame {
         setTitle("Piano Keyboard"); 
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
         setLocationRelativeTo(null); 
-        setLayout(new FlowLayout()); 
+        // setLayout(new FlowLayout()); 
         setResizable(false); 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JButton [] buttons = new JButton [NUMBER_KEYS]; 
-        // Test KeyListener
-        PianoKeys pk = new PianoKeys(); 
-        
-        for (int i = 0; i < NUMBER_KEYS; i++)
-        {
-            String id = "" + i; 
-            buttons[i] = new JButton(id);
-            buttons[i].addActionListener(pk); 
-        }
-        // Test KeyListener
+        /* 
+         * Create Panels using NetBeans
+         */
+
+        JPanel top = new JPanel(); // Section for keyboard
+            top.setBackground(Color.YELLOW);
+        JPanel bottom = new JPanel(); // Section for chord progression
+            bottom.setBackground(Color.RED);
+        JPanel keyboardPanel = new JPanel(); // Panel to place keyboard JButtons
+            keyboardPanel.setBackground(Color.BLUE);
+        JPanel display = new JPanel(); // Panel to display notes
+
+        // Adding grouplayout
+        GroupLayout topLayout = new GroupLayout(top);
+        topLayout.setHorizontalGroup(topLayout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(keyboardPanel)     
+            .addContainerGap()   
+        );
+        topLayout.setVerticalGroup(topLayout.createSequentialGroup()
+            // .addComponent(display)
+            .addContainerGap()
+            .addComponent(keyboardPanel)
+            .addContainerGap()
+        );
+        top.setLayout(topLayout);
+
+        GroupLayout frameLayout = new GroupLayout(getContentPane());
+        frameLayout.setHorizontalGroup(frameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(frameLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addComponent(bottom)
+                    .addComponent(top)
+                )
+                .addContainerGap()
+            )
+        );
+        frameLayout.setVerticalGroup(frameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(frameLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(top)
+                .addComponent(bottom)
+                .addContainerGap()
+            )
+        );
+        getContentPane().setLayout(frameLayout);
+        // GroupLayout bottomLayout = new GroupLayout(bottom);
+        // GroupLayout keyboardLayout = new GroupLayout(keyboardPanel);
+
+        /*
+         * End of NetBeans generated code
+         */
+
+        /*
+         * Test Code for button listener and audio callback
+         */
+        // JButton [] buttons = new JButton [NUMBER_KEYS]; 
         // PianoKeys pk = new PianoKeys(); 
-        // Test button
-        // JButton test = new JButton("67"); 
-        // test.addActionListener(pk);    
         
-        for (int i = 0; i < NUMBER_KEYS; i++)
-        {
-            add(buttons[i]);
-        }
-        // add(test, BorderLayout.CENTER);
+        // for (int i = 0; i < NUMBER_KEYS; i++)
+        // {
+        //     String id = "" + i; 
+        //     buttons[i] = new JButton(id);
+        //     buttons[i].addActionListener(pk); 
+        // }
+        
+        // for (int i = 0; i < NUMBER_KEYS; i++)
+        //     { add(buttons[i]); }
+        /*
+         * End test code for button listener and audio callback
+         */
+        
         setVisible(true); 
     }
 
