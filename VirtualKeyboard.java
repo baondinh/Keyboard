@@ -16,6 +16,7 @@
 import javax.swing.*; 
 import java.awt.*; 
 import java.awt.event.*; 
+import java.util.*;
 
 public class VirtualKeyboard {
     public static void main (String [ ] args) {
@@ -68,10 +69,7 @@ class KeyboardApplication extends JFrame {
         JPanel bottom = new JPanel(); // Section for chord progression
             bottom.setBackground(Color.RED);
 
-        // JPanel keyboardPanel = new JPanel(); // Panel to place keyboard JButtons
-            // keyboardPanel.setBackground(Color.GREEN);
-        JLayeredPane keyboardPane = new JLayeredPane();
-            keyboardPane.setBackground(Color.GREEN);
+        JLayeredPane keyboardPane = new JLayeredPane(); // Pane that allows for JButtons to layer over eachother
 
         JPanel display = new JPanel(); // Panel to display notes
             display.setBackground(Color.BLUE);
@@ -81,17 +79,72 @@ class KeyboardApplication extends JFrame {
         //Test create button add to keyboardPanel
         // JLayeredPane lp = getLayeredPane();
         // JLayeredPane lp = new JLayeredPane();
-        JButton button1 = new JButton("white");
-            button1.setBackground(Color.WHITE); 
-            button1.setBounds(20, 20, 10, 60); 
-            button1.setOpaque(true);
-        JButton button2 = new JButton("black");
-            button2.setBackground(Color.BLACK);
-            button2.setBounds(25, 20, 10, 30); 
-        keyboardPane.add(button1, JLayeredPane.DEFAULT_LAYER); 
-        keyboardPane.add(button2, JLayeredPane.DRAG_LAYER); 
+        // JButton button1 = new JButton("white");
+        //     button1.setBackground(Color.WHITE); 
+        //     button1.setBounds(20, 20, 10, 60); 
+        //     button1.setOpaque(true);
+        // JButton button2 = new JButton("black");
+        //     button2.setBackground(Color.BLACK);
+        //     button2.setBounds(25, 20, 10, 30); 
+        // keyboardPane.add(button1, JLayeredPane.DEFAULT_LAYER); 
+        // keyboardPane.add(button2, JLayeredPane.DRAG_LAYER); 
 
-        // keyboardPanel.add(lp); 
+        // Creating the keyboard
+        JButton [] buttons = new JButton [NUMBER_KEYS]; // An array of JButtons that correspond to the piano keys
+        PianoKeys pk = new PianoKeys(); // ActionListener for piano key JButtons
+        
+        // Creating a set that stores the key numbers for black keys
+        Set<Integer> blackKeyNums = new HashSet<>(); 
+        for (int i = 1; i <= NUMBER_KEYS; i++) 
+        {
+            int j = 12 * (i / 12); //Represents octave shift
+            if ( (i - 2 - j) % 5 == 0 || (i - j) % 5 == 0)
+                { blackKeyNums.add( (Integer) i ); }
+        }
+        System.out.println(blackKeyNums.toString());
+        Keyboard test = keyboard; 
+        System.out.println("Number of keys = " + test.KEY_NAMES.length); 
+        for (int i = 0; i < test.keys.length; i++)
+        {
+            System.out.printf("#%2d, Key: %3s, Black Key? %s\n", test.keys[i].getKeyNum(), 
+                                test.keys[i].getName(), test.keys[i].getBlackKey() ? "true" : "false" );
+        }
+
+        int keyboardX = 5; // Starting x coordinate for keyboard generation within JLayeredPane
+        int keyboardY = 20; // Starting y coordinate for keyboard generation within JLayeredPane
+        for (int i = 0; i < NUMBER_KEYS; i++)
+        {
+            String id = "" + i; 
+            // buttons[i] = new JButton(id);
+            buttons[i] = new JButton();
+            buttons[i].setActionCommand(id);
+            buttons[i].addActionListener(pk); 
+
+            if (blackKeyNums.contains(i + 1))
+            {
+                buttons[i].setBackground(Color.BLACK);
+                buttons[i].setBounds(keyboardX, keyboardY, 10, 30);
+                keyboardPane.add(buttons[i], JLayeredPane.DRAG_LAYER);
+            }
+            else {
+                keyboardX += 5;
+                buttons[i].setBackground(Color.WHITE);
+                buttons[i].setBounds(keyboardX, keyboardY, 10, 60);
+                keyboardPane.add(buttons[i], JLayeredPane.DEFAULT_LAYER);
+                keyboardX += 5;
+            }
+        }
+        
+        // for (int i = 0; i < NUMBER_KEYS; i++)
+        //     { add(buttons[i]); }
+
+        // for (int i = 0; i < keys.length; i++)
+        // {
+        //     // Initialize a new key object
+        //     Key newKey = new Key( (i + 1) , KEY_NAMES[i], blackKeyNums.contains(i + 1) );
+        //     // Store key object in keys array
+        //     this.keys[i] = newKey; 
+        // }
 
         // Top component
         GroupLayout topLayout = new GroupLayout(top);
@@ -99,7 +152,6 @@ class KeyboardApplication extends JFrame {
             .addContainerGap()
             .addGroup(topLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
                 .addComponent(display)
-                // .addComponent(keyboardPanel) 
                 .addComponent(keyboardPane)
             )    
             .addContainerGap()   
@@ -107,7 +159,6 @@ class KeyboardApplication extends JFrame {
         topLayout.setVerticalGroup(topLayout.createSequentialGroup()
             .addContainerGap()
             .addComponent(display)
-            // .addComponent(keyboardPanel)
             .addComponent(keyboardPane)
             .addContainerGap()
         );
@@ -134,30 +185,9 @@ class KeyboardApplication extends JFrame {
             )
         );
         getContentPane().setLayout(frameLayout);
-        // GroupLayout bottomLayout = new GroupLayout(bottom);
-        // GroupLayout keyboardLayout = new GroupLayout(keyboardPanel);
 
         /*
          * End of NetBeans generated code
-         */
-
-        /*
-         * Test Code for button listener and audio callback
-         */
-        // JButton [] buttons = new JButton [NUMBER_KEYS]; 
-        // PianoKeys pk = new PianoKeys(); 
-        
-        // for (int i = 0; i < NUMBER_KEYS; i++)
-        // {
-        //     String id = "" + i; 
-        //     buttons[i] = new JButton(id);
-        //     buttons[i].addActionListener(pk); 
-        // }
-        
-        // for (int i = 0; i < NUMBER_KEYS; i++)
-        //     { add(buttons[i]); }
-        /*
-         * End test code for button listener and audio callback
          */
         
         setVisible(true); 
@@ -167,9 +197,12 @@ class KeyboardApplication extends JFrame {
         public void actionPerformed(ActionEvent e)
         {
             JButton b = (JButton) e.getSource(); 
-            String id = b.getText(); 
-            System.out.println(Integer.parseInt(id));
-            keyboard.playKeyAudio(Integer.parseInt(id)); 
+            // String id = b.getText(); 
+            String id2 = b.getActionCommand();
+            // System.out.println(Integer.parseInt(id));
+            // keyboard.playKeyAudio(Integer.parseInt(id)); 
+            System.out.println(Integer.parseInt(id2));
+            keyboard.playKeyAudio(Integer.parseInt(id2)); 
         }
     }
 
