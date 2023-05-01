@@ -40,10 +40,9 @@ class KeyboardApplication extends JFrame {
     // Instance fields
     private final int FRAME_WIDTH = 600; 
     private final int FRAME_HEIGHT = 600; 
-
     private final int NUMBER_KEYS = 88; 
 
-    private JLabel displayLabel = new JLabel("test"); 
+    private JLabel displayLabel = new JLabel("Press a key!"); 
 
     // Initialize a new keyboard 
     Keyboard keyboard = new Keyboard(); 
@@ -72,15 +71,22 @@ class KeyboardApplication extends JFrame {
         JPanel bottom = new JPanel(); // Section for chord progression
             bottom.setBackground(Color.RED);
 
+        // Top subdivisions
         JLayeredPane keyboardPane = new JLayeredPane(); // Pane that allows for JButtons to layer over eachother
-
         JPanel display = new JPanel(); // Panel to display notes
             display.setBackground(Color.BLUE);
-
-        // Creating JLabel to be put in display JPanel
-        // JLabel displayLabel = new JLabel("test"); 
         displayLabel.setFont(largeFont);
         displayLabel.setForeground(Color.WHITE);
+
+        // Bottom subdivisions
+        JPanel bottomUL = new JPanel(); //upper left
+            bottomUL.setBackground(Color.ORANGE);
+        JPanel bottomUR = new JPanel(); //upper right
+            bottomUR.setBackground(Color.CYAN);
+        JPanel bottomLL = new JPanel(); //lower left
+            bottomLL.setBackground(Color.PINK);
+        JPanel bottomLR = new JPanel(); //lower right
+            bottomLR.setBackground(Color.GREEN);
 
         // Adding grouplayout
         // Creating the keyboard
@@ -95,15 +101,7 @@ class KeyboardApplication extends JFrame {
             if ( (i - 2 - j) % 5 == 0 || (i - j) % 5 == 0)
                 { blackKeyNums.add( (Integer) i ); }
         }
-        System.out.println(blackKeyNums.toString());
-        Keyboard test = keyboard; 
-        System.out.println("Number of keys = " + test.KEY_NAMES.length); 
-        for (int i = 0; i < test.keys.length; i++)
-        {
-            System.out.printf("#%2d, Key: %3s, Black Key? %s\n", test.keys[i].getKeyNum(), 
-                                test.keys[i].getName(), test.keys[i].getBlackKey() ? "true" : "false" );
-        }
-
+        // Positioning the keys within JLayeredPane
         int keyboardX = 5; // Starting x coordinate for keyboard generation within JLayeredPane
         int keyboardY = 20; // Starting y coordinate for keyboard generation within JLayeredPane
         for (int i = 0; i < NUMBER_KEYS; i++)
@@ -128,22 +126,24 @@ class KeyboardApplication extends JFrame {
             }
         }
 
-        // Top component (keyboard and display)
-        // GroupLayout displayLayout = new GroupLayout(display); 
-        // displayLayout.setHorizontalGroup(displayLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-        //     .addGroup(GroupLayout.Alignment.CENTER, displayLayout.createSequentialGroup()
-        //         .addContainerGap()
-        //         .addComponent(displayLabel)
-        //         .addContainerGap()
-        //     )
-        // );
-        // displayLayout.setVerticalGroup(displayLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-        //     .addGroup(GroupLayout.Alignment.CENTER, displayLayout.createSequentialGroup()
-        //         .addContainerGap()
-        //         .addComponent(displayLabel)
-        //         .addContainerGap()
-        //     )
-        // );
+        GroupLayout displayLayout = new GroupLayout(display); 
+        displayLayout.setHorizontalGroup(displayLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(displayLayout.createSequentialGroup()
+                // .addGap(200, 200, 200)
+                .addContainerGap(50, 50)
+                .addComponent(displayLabel)
+                .addContainerGap(50, 50)
+            )
+        );
+        displayLayout.setVerticalGroup(displayLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(displayLayout.createSequentialGroup()
+                .addContainerGap(50, 50)
+                .addComponent(displayLabel)
+                .addContainerGap(50, 50)
+                // .addGap(42, 42, 42)
+            )
+        );
+        display.setLayout(displayLayout);
         // displayLayout.setHorizontalGroup(displayLayout.createSequentialGroup()
         //     .addContainerGap()
         //     .addComponent(displayLabel)
@@ -154,8 +154,9 @@ class KeyboardApplication extends JFrame {
         //     .addComponent(displayLabel)
         //     .addContainerGap()
         // );
-        display.add(displayLabel);
+        // display.add(displayLabel);
 
+        // Top layout
         GroupLayout topLayout = new GroupLayout(top);
         topLayout.setHorizontalGroup(topLayout.createSequentialGroup()
             .addContainerGap()
@@ -172,6 +173,40 @@ class KeyboardApplication extends JFrame {
             .addContainerGap()
         );
         top.setLayout(topLayout);
+
+        // Bottom layout 
+        GroupLayout bottomLayout = new GroupLayout(bottom); 
+        bottomLayout.setHorizontalGroup(bottomLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(bottomLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(bottomLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addComponent(bottomUL)
+                    .addComponent(bottomLL)
+                )
+                .addContainerGap()
+                .addGroup(bottomLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addComponent(bottomUR)
+                    .addComponent(bottomLR)
+                )
+                .addContainerGap()
+            )
+        );
+        bottomLayout.setVerticalGroup(bottomLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(bottomLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(bottomLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addComponent(bottomUL)
+                    .addComponent(bottomUR)
+                )
+                .addContainerGap()
+                .addGroup(bottomLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addComponent(bottomLL)
+                    .addComponent(bottomLR)
+                )
+                .addContainerGap()
+            )
+        );
+        bottom.setLayout(bottomLayout);
 
         // Frame in general
         GroupLayout frameLayout = new GroupLayout(getContentPane());
