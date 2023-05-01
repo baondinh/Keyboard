@@ -48,4 +48,9 @@ public class Keyboard {
     {
         this.keys[id].playAudio();
     }
+
+    public String getKeyPlayed(int id)
+    {
+        return this.keys[id].getName();
+    }
 }
