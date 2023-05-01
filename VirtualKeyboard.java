@@ -43,6 +43,8 @@ class KeyboardApplication extends JFrame {
 
     private final int NUMBER_KEYS = 88; 
 
+    private JLabel displayLabel = new JLabel("test"); 
+
     // Initialize a new keyboard 
     Keyboard keyboard = new Keyboard(); 
 
@@ -57,6 +59,10 @@ class KeyboardApplication extends JFrame {
         setResizable(false); 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        // Create fonts 
+        Font smallFont = new Font(Font.SANS_SERIF, Font.PLAIN, 12); 
+        Font largeFont = new Font(Font.SANS_SERIF, Font.BOLD, 20); 
+
         /* 
          * Create Panels using NetBeans
          */
@@ -70,6 +76,11 @@ class KeyboardApplication extends JFrame {
 
         JPanel display = new JPanel(); // Panel to display notes
             display.setBackground(Color.BLUE);
+
+        // Creating JLabel to be put in display JPanel
+        // JLabel displayLabel = new JLabel("test"); 
+        displayLabel.setFont(largeFont);
+        displayLabel.setForeground(Color.WHITE);
 
         // Adding grouplayout
         // Creating the keyboard
@@ -117,7 +128,34 @@ class KeyboardApplication extends JFrame {
             }
         }
 
-        // Top component
+        // Top component (keyboard and display)
+        // GroupLayout displayLayout = new GroupLayout(display); 
+        // displayLayout.setHorizontalGroup(displayLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+        //     .addGroup(GroupLayout.Alignment.CENTER, displayLayout.createSequentialGroup()
+        //         .addContainerGap()
+        //         .addComponent(displayLabel)
+        //         .addContainerGap()
+        //     )
+        // );
+        // displayLayout.setVerticalGroup(displayLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+        //     .addGroup(GroupLayout.Alignment.CENTER, displayLayout.createSequentialGroup()
+        //         .addContainerGap()
+        //         .addComponent(displayLabel)
+        //         .addContainerGap()
+        //     )
+        // );
+        // displayLayout.setHorizontalGroup(displayLayout.createSequentialGroup()
+        //     .addContainerGap()
+        //     .addComponent(displayLabel)
+        //     .addContainerGap()
+        // );
+        // displayLayout.setVerticalGroup(displayLayout.createSequentialGroup()
+        //     .addContainerGap()
+        //     .addComponent(displayLabel)
+        //     .addContainerGap()
+        // );
+        display.add(displayLabel);
+
         GroupLayout topLayout = new GroupLayout(top);
         topLayout.setHorizontalGroup(topLayout.createSequentialGroup()
             .addContainerGap()
@@ -171,6 +209,9 @@ class KeyboardApplication extends JFrame {
             String id = b.getActionCommand();
             System.out.println(Integer.parseInt(id));
             keyboard.playKeyAudio(Integer.parseInt(id)); 
+
+            String notePlayed = keyboard.getKeyPlayed(Integer.parseInt(id));
+            displayLabel.setText(notePlayed);            
         }
     }
 
