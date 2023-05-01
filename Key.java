@@ -16,7 +16,6 @@
 
 import java.io.*; 
 import javax.sound.sampled.*; 
-import java.util.*; 
 
 public class Key {
     protected boolean blackKey; //Black or white key
@@ -61,8 +60,7 @@ public class Key {
             this.audio = AudioSystem.getAudioInputStream(new File(this.audioPath).getAbsoluteFile());
             Clip clip = AudioSystem.getClip(); 
             clip.open(this.audio); 
-            clip.start(); 
-            // clip.close(); 
+            clip.start();  
         }
         catch (Exception e) { System.out.println("Error: Audio not found"); }
     }

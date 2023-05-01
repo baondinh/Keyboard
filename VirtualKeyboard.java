@@ -20,22 +20,19 @@ import java.util.*;
 
 public class VirtualKeyboard {
     public static void main (String [ ] args) {
-        // Initialize a new keyboard 
-        // Keyboard keyboard = new Keyboard(); 
-        // for (Key key: keyboard.keys)
-        // {
-        //     System.out.println(key.getKeyNum());
-        // }
-        // System.out.println("Number of keys = " + keyboard.KEY_NAMES.length); 
-        // for (int i = 0; i < keyboard.keys.length; i++)
-        // {
-        //     System.out.printf("#%2d, Key: %3s, Black Key? %s, Audio Path: %s\n", keyboard.keys[i].getKeyNum(), 
-        //                         keyboard.keys[i].getName(), keyboard.keys[i].getBlackKey() ? "true" : "false", keyboard.keys[i].getAudioPath() );
-        // }
         // Initialize a backend
         // keyboard can be the backend 
         // create the GUI within the virtual keyboard class!
         KeyboardApplication keyboardGUI = new KeyboardApplication();
+
+        // Key assignment Test *******************
+        // Keyboard test = keyboardGUI.keyboard;
+        // System.out.println("Number of keys = " + test.KEY_NAMES.length); 
+        // for (int i = 0; i < test.keys.length; i++)
+        // {
+        //     System.out.printf("#%2d, Key: %3s, Black Key? %s, Audio Path: %s\n", test.keys[i].getKeyNum(), 
+        //                         test.keys[i].getName(), test.keys[i].getBlackKey() ? "true" : "false", keyboard.keys[i].getAudioPath() );
+        // }
     }
 }
 
@@ -75,20 +72,6 @@ class KeyboardApplication extends JFrame {
             display.setBackground(Color.BLUE);
 
         // Adding grouplayout
-
-        //Test create button add to keyboardPanel
-        // JLayeredPane lp = getLayeredPane();
-        // JLayeredPane lp = new JLayeredPane();
-        // JButton button1 = new JButton("white");
-        //     button1.setBackground(Color.WHITE); 
-        //     button1.setBounds(20, 20, 10, 60); 
-        //     button1.setOpaque(true);
-        // JButton button2 = new JButton("black");
-        //     button2.setBackground(Color.BLACK);
-        //     button2.setBounds(25, 20, 10, 30); 
-        // keyboardPane.add(button1, JLayeredPane.DEFAULT_LAYER); 
-        // keyboardPane.add(button2, JLayeredPane.DRAG_LAYER); 
-
         // Creating the keyboard
         JButton [] buttons = new JButton [NUMBER_KEYS]; // An array of JButtons that correspond to the piano keys
         PianoKeys pk = new PianoKeys(); // ActionListener for piano key JButtons
@@ -115,7 +98,6 @@ class KeyboardApplication extends JFrame {
         for (int i = 0; i < NUMBER_KEYS; i++)
         {
             String id = "" + i; 
-            // buttons[i] = new JButton(id);
             buttons[i] = new JButton();
             buttons[i].setActionCommand(id);
             buttons[i].addActionListener(pk); 
@@ -134,17 +116,6 @@ class KeyboardApplication extends JFrame {
                 keyboardX += 5;
             }
         }
-        
-        // for (int i = 0; i < NUMBER_KEYS; i++)
-        //     { add(buttons[i]); }
-
-        // for (int i = 0; i < keys.length; i++)
-        // {
-        //     // Initialize a new key object
-        //     Key newKey = new Key( (i + 1) , KEY_NAMES[i], blackKeyNums.contains(i + 1) );
-        //     // Store key object in keys array
-        //     this.keys[i] = newKey; 
-        // }
 
         // Top component
         GroupLayout topLayout = new GroupLayout(top);
@@ -187,7 +158,7 @@ class KeyboardApplication extends JFrame {
         getContentPane().setLayout(frameLayout);
 
         /*
-         * End of NetBeans generated code
+         * End of NetBeans inspired code
          */
         
         setVisible(true); 
@@ -197,12 +168,9 @@ class KeyboardApplication extends JFrame {
         public void actionPerformed(ActionEvent e)
         {
             JButton b = (JButton) e.getSource(); 
-            // String id = b.getText(); 
-            String id2 = b.getActionCommand();
-            // System.out.println(Integer.parseInt(id));
-            // keyboard.playKeyAudio(Integer.parseInt(id)); 
-            System.out.println(Integer.parseInt(id2));
-            keyboard.playKeyAudio(Integer.parseInt(id2)); 
+            String id = b.getActionCommand();
+            System.out.println(Integer.parseInt(id));
+            keyboard.playKeyAudio(Integer.parseInt(id)); 
         }
     }
 

@@ -35,7 +35,6 @@ public class Keyboard {
                 { blackKeyNums.add( (Integer) i ); }
         }
 
-
         for (int i = 0; i < keys.length; i++)
         {
             // Initialize a new key object
@@ -43,24 +42,10 @@ public class Keyboard {
             // Store key object in keys array
             this.keys[i] = newKey; 
         }
-
-
     }
 
     public void playKeyAudio(int id)
     {
         this.keys[id].playAudio();
     }
-
-    // Testing only
-    // public static void main (String [] args)
-    // {
-    //     Keyboard test = new Keyboard(); 
-    //     System.out.println("Number of keys = " + test.KEY_NAMES.length); 
-    //     for (int i = 0; i < test.keys.length; i++)
-    //     {
-    //         System.out.printf("#%2d, Key: %3s, Black Key? %s\n", test.keys[i].getKeyNum(), 
-    //                             test.keys[i].getName(), test.keys[i].getBlackKey() ? "true" : "false" );
-    //     }
-    // }
 }
