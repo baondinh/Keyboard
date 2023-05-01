@@ -67,25 +67,53 @@ class KeyboardApplication extends JFrame {
             top.setBackground(Color.YELLOW);
         JPanel bottom = new JPanel(); // Section for chord progression
             bottom.setBackground(Color.RED);
-        JPanel keyboardPanel = new JPanel(); // Panel to place keyboard JButtons
-            keyboardPanel.setBackground(Color.BLUE);
+
+        // JPanel keyboardPanel = new JPanel(); // Panel to place keyboard JButtons
+            // keyboardPanel.setBackground(Color.GREEN);
+        JLayeredPane keyboardPane = new JLayeredPane();
+            keyboardPane.setBackground(Color.GREEN);
+
         JPanel display = new JPanel(); // Panel to display notes
+            display.setBackground(Color.BLUE);
 
         // Adding grouplayout
+
+        //Test create button add to keyboardPanel
+        // JLayeredPane lp = getLayeredPane();
+        // JLayeredPane lp = new JLayeredPane();
+        JButton button1 = new JButton("white");
+            button1.setBackground(Color.WHITE); 
+            button1.setBounds(20, 20, 10, 60); 
+            button1.setOpaque(true);
+        JButton button2 = new JButton("black");
+            button2.setBackground(Color.BLACK);
+            button2.setBounds(25, 20, 10, 30); 
+        keyboardPane.add(button1, JLayeredPane.DEFAULT_LAYER); 
+        keyboardPane.add(button2, JLayeredPane.DRAG_LAYER); 
+
+        // keyboardPanel.add(lp); 
+
+        // Top component
         GroupLayout topLayout = new GroupLayout(top);
         topLayout.setHorizontalGroup(topLayout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(keyboardPanel)     
+            .addGroup(topLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                .addComponent(display)
+                // .addComponent(keyboardPanel) 
+                .addComponent(keyboardPane)
+            )    
             .addContainerGap()   
         );
         topLayout.setVerticalGroup(topLayout.createSequentialGroup()
-            // .addComponent(display)
             .addContainerGap()
-            .addComponent(keyboardPanel)
+            .addComponent(display)
+            // .addComponent(keyboardPanel)
+            .addComponent(keyboardPane)
             .addContainerGap()
         );
         top.setLayout(topLayout);
 
+        // Frame in general
         GroupLayout frameLayout = new GroupLayout(getContentPane());
         frameLayout.setHorizontalGroup(frameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(GroupLayout.Alignment.TRAILING, frameLayout.createSequentialGroup()
