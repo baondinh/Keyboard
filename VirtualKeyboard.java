@@ -126,6 +126,7 @@ class KeyboardApplication extends JFrame {
             }
         }
 
+        // Display for last key pressed
         GroupLayout displayLayout = new GroupLayout(display); 
         displayLayout.setHorizontalGroup(displayLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(displayLayout.createSequentialGroup()
@@ -174,7 +175,49 @@ class KeyboardApplication extends JFrame {
         );
         top.setLayout(topLayout);
 
+        // Creating components to place in bottom portion
+        //JComboBox
+        JComboBox<String> startingNote = new JComboBox<String>();
+        for (int i = 0; i < NUMBER_KEYS; i++)
+            { startingNote.addItem(keyboard.KEY_NAMES[i]); }
+        startingNote.setBounds(0, 0, 10, 10);
+
+        //RadioButtons
+        JRadioButton major = new JRadioButton("Major");
+        JRadioButton minor = new JRadioButton("Minor");
+        ButtonGroup tonality = new ButtonGroup();
+        tonality.add(major); 
+        tonality.add(minor);
+
+        //JComboPanel
+        JPanel comboPanel = new JPanel(); 
+        comboPanel.add(startingNote);
+
         // Bottom layout 
+        // BottomUL quadrant
+        GroupLayout bottomULLayout = new GroupLayout(bottomUL);
+        bottomULLayout.setHorizontalGroup(bottomULLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(bottomULLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(comboPanel)
+                .addComponent(major)
+                .addComponent(minor)
+                .addContainerGap()
+            )
+        );
+        bottomULLayout.setVerticalGroup(bottomULLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(bottomULLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(bottomULLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(comboPanel)
+                    .addComponent(major)
+                    .addComponent(minor)
+                )
+                .addContainerGap()
+            )
+        );
+        bottomUL.setLayout(bottomULLayout);
+
         GroupLayout bottomLayout = new GroupLayout(bottom); 
         bottomLayout.setHorizontalGroup(bottomLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(bottomLayout.createSequentialGroup()
@@ -233,16 +276,17 @@ class KeyboardApplication extends JFrame {
         /*
          * End of NetBeans inspired code
          */
-        
+
         setVisible(true); 
     }
 
+    // Inner class that implements ActionListener for keyboard JButtons
     class PianoKeys implements ActionListener {
         public void actionPerformed(ActionEvent e)
         {
             JButton b = (JButton) e.getSource(); 
             String id = b.getActionCommand();
-            System.out.println(Integer.parseInt(id));
+            // System.out.println(Integer.parseInt(id));
             keyboard.playKeyAudio(Integer.parseInt(id)); 
 
             String notePlayed = keyboard.getKeyPlayed(Integer.parseInt(id));
@@ -250,4 +294,9 @@ class KeyboardApplication extends JFrame {
         }
     }
 
+    // Inner class for use with JComboBox to store Objects with a key and value (tuple data structure?)
+    class ComboItem
+    {
+        private String key; 
+    }
 }
